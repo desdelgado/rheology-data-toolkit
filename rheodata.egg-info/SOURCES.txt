@@ -1,0 +1,7 @@
+setup.py
+rheodata.egg-info/PKG-INFO
+rheodata.egg-info/SOURCES.txt
+rheodata.egg-info/dependency_links.txt
+rheodata.egg-info/not-zip-safe
+rheodata.egg-info/requires.txt
+rheodata.egg-info/top_level.txt
