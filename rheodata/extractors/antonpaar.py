@@ -76,8 +76,8 @@ class AntonPaarExtractor():
         correct_filetype = self.check_file_type(input_path)
 
         if correct_filetype == False:
-            print("Need to convert file to .xlsx format")
-            print("Stopping program")
+            print("File is not in .xlsx format")
+            print("Stopping program.  Convert file and try again.")
             sys.exit()
 
         temp_data = pd.read_excel(input_path)
@@ -103,5 +103,8 @@ class AntonPaarExtractor():
         
         # Pass back a dictionary of dataframes
         return data_dict
+
+    def version(self) -> str:
+        return '0.0.1'
 
 
