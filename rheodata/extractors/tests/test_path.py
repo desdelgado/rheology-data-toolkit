@@ -11,4 +11,4 @@ test = extractor.import_rheo_data(path, output_folder_path)
 #test = pd.read_excel(path)
 
 
-print(test)
+print(type(test))

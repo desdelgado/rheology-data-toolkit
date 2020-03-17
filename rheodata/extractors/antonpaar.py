@@ -7,10 +7,12 @@ class AntonPaarExtractor():
     def __init__(self):
         """ I believe I dont need this"""
 
-    def process_single_excel(self, temp_data, output_folder:str, save_data:bool=False):
+
+    def process_single_excel(self, temp_data, output_folder:str='', save_data:bool=False):
         """
         Intakes dataframe from anton par and returns a csv with 
-        just the data in it
+        just the data in it as well as the test name.  
+        Also has option to save the data to a given output folder 
 
         param: temp_data - data frame from anton par rheometer
         """
@@ -52,6 +54,7 @@ class AntonPaarExtractor():
         # Save to a CSV file with the test name if the swtich is true
         if save_data == True:
             reshape_data.to_csv(output_folder + test_name + '.csv', index=False)
+
         return reshape_data, test_name
     
     def check_file_type(self, path):
@@ -62,8 +65,12 @@ class AntonPaarExtractor():
         else:
             return False
         
-    def import_rheo_data(self, input_path:str, output_folder_path:str):
-
+    def import_rheo_data(self, input_path:str, output_folder_path:str=''):
+        """
+        Intakes the input path of the xlsx file from the user and returns
+        dictionary with each test from xlsx file as a dataframe as the value
+        and the testname as the key
+        """
 
         # Test to make sure were getting the right path
         correct_filetype = self.check_file_type(input_path)
@@ -72,8 +79,6 @@ class AntonPaarExtractor():
             print("Need to convert file to .xlsx format")
             print("Stopping program")
             sys.exit()
-
-
 
         temp_data = pd.read_excel(input_path)
         test_indexes = temp_data.index[temp_data.iloc[:,0]== 'Test:'].tolist()
