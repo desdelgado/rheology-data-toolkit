@@ -51,6 +51,8 @@ class AntonPaarExtractor():
         reshape_data.columns = unit_columns
         reshape_data = reshape_data.iloc[3:,:].reset_index(drop=True)
 
+        self.parse_test_type(reshape_data)
+
         # Save to a CSV file with the test name if the swtich is true
         if save_data == True:
             reshape_data.to_csv(output_folder + test_name + '.csv', index=False)
@@ -103,6 +105,26 @@ class AntonPaarExtractor():
         
         # Pass back a dictionary of dataframes
         return data_dict
+
+    def parse_test_type(self, temp_df):
+        """
+        Look at the columns of the inputed data and determine
+        what type of plots to plot 
+        """
+        # Get the columns
+        cols = temp_df.columns
+        # List of variables that uniquely identify what type of data it is  
+        freq_sweel_list = ['Angular Frequency [rad/s]', 'Storage Modulus [Pa]', 'Loss Modulus [Pa]']
+        amplitude_sweep = ['Shear Strain [1]', 'Storage Modulus [Pa]', 'Loss Modulus [Pa]']
+
+        # Check if its a frequency sweep
+        if all(elem in cols for elem in freq_sweel_list):
+            print("Frequency Sweep")
+            #return 'freq_sweep'
+        # Check if its an amplitude sweep
+        elif all(elem in cols for elem in amplitude_sweep):
+            print("Amplitude Sweep")
+            #return "amplitude_sweep"
 
     def version(self) -> str:
         return '0.0.1'
