@@ -38,10 +38,13 @@ class BatteryMetadata(BaseModel):
     polycation_mw: float = Field(None, description="Molecular of polycation")
 
     polyanion_cf: float = Field(None, description="Charge fraction of polyanion")
-    polycation_cb: float = Field(None, description="Charge fraction of polycation")
+    polycation_cf: float = Field(None, description="Charge fraction of polycation")
 
-    salt: str = Field(None, description="Salt used in solution")
+    salt_type: str = Field(None, description="Salt used in solution")
+    salt_concentration: str = Field(None, description="Concentration of salt in solution")
+
     solvent: str Field(None, description="Solvent used in solution")
+    solvent_concentration: str Field(None, description="Concentration of solvent in solution")
 
     stoichiometric_ratio: float = Field(None, description="Ratio of polyanion/cation")
     

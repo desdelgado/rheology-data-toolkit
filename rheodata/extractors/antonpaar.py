@@ -1,12 +1,60 @@
+# %%
+
 import pandas as pd
 import sys
 import os
+# %%
 
 
+
+
+# %%
 class AntonPaarExtractor():
     def __init__(self):
         """ I believe I dont need this"""
 
+    def import_rheo_data(self, input_path:str, output_folder_path:str=''):
+        """
+        Intakes the input path of the xlsx file from the user and returns
+        dictionary with each test from xlsx file as a dataframe as the value
+        and the testname as the key
+        """
+        correct_filetype = self.check_file_type(input_path)
+        if correct_filetype == False:
+            print("File is not in .xlsx format")
+            print("Stopping program.  Convert file and try again.")
+            sys.exit()
+
+        temp_data = pd.read_excel(input_path)
+        # Get the project from the top of the data
+        test_indexes = temp_data.index[temp_data.iloc[:,0] == 'Test:'].tolist()
+        # create a dictionary to hold the dataframes from the xslx file
+        modified_output_dict = {}
+        raw_output_dict = {}
+        for i in range(len(test_indexes)):
+            
+            # Test if were not the last one
+            if test_indexes[i] != test_indexes[-1]:
+              
+                # Get the next index
+                test_start_index = test_indexes[i]
+                test_end_index = int(test_indexes[i+1]) - 1
+                raw_df = temp_data.iloc[test_start_index:test_end_index,:]
+
+                cleaned_df, test_name = self.process_single_excel(raw_df, output_folder_path)
+                modified_output_dict[test_name] = cleaned_df
+                raw_output_dict[test_name] = raw_df
+
+            # If it's the last number in the list
+            else:
+                test_start_index = int(test_indexes[i])
+                raw_df = temp_data.iloc[test_start_index:,:]
+                cleaned_df, test_name = self.process_single_excel(raw_df, output_folder_path)
+                modified_output_dict[test_name] = cleaned_df
+                raw_output_dict[test_name] = raw_df
+
+        # Pass back a dictionary of dataframes
+        return modified_output_dict, raw_output_dict
 
     def process_single_excel(self, temp_data, output_folder:str='', save_data:bool=False):
         """
@@ -20,9 +68,7 @@ class AntonPaarExtractor():
         # reshape the dataframe
         start_row_index = 0
         
-        # Reset the index
         temp_data = temp_data.reset_index(drop=True)
-
         # Find where the data starts
         start_row_index = temp_data.index[temp_data.iloc[:,0] == 'Interval data:'].tolist()[0]
         # Test name - used later when program is extended to multiple tests
@@ -66,53 +112,14 @@ class AntonPaarExtractor():
             return True
         else:
             return False
-        
-    def import_rheo_data(self, input_path:str, output_folder_path:str=''):
-        """
-        Intakes the input path of the xlsx file from the user and returns
-        dictionary with each test from xlsx file as a dataframe as the value
-        and the testname as the key
-        """
 
-        # Test to make sure were getting the right path
-        correct_filetype = self.check_file_type(input_path)
-
-        if correct_filetype == False:
-            print("File is not in .xlsx format")
-            print("Stopping program.  Convert file and try again.")
-            sys.exit()
-
-        temp_data = pd.read_excel(input_path)
-        test_indexes = temp_data.index[temp_data.iloc[:,0]== 'Test:'].tolist()
-
-        # create a dictionary to hold the dataframes from the xslx file
-        data_dict = {}
-        for i in range(len(test_indexes)):
-            # Test if were not the last one
-            if test_indexes[i] != test_indexes[-1]:
-                # Get the next index
-                next_data_index = int(test_indexes[i+1]) - 1
-                temp_df = temp_data.iloc[test_indexes[i]:next_data_index,:]
-
-                # Parse just the data
-                cleaned_df, test_name = self.process_single_excel(temp_df, output_folder_path)
-                data_dict[test_name] = cleaned_df
-            # If it's the last number in the list
-            else:
-                temp_df = temp_data.iloc[i:,:]
-                cleaned_df, test_name = self.process_single_excel(temp_df, output_folder_path)
-                data_dict[test_name] = cleaned_df
-        
-        # Pass back a dictionary of dataframes
-        return data_dict
-
-    def parse_test_type(self, temp_df):
+    def parse_test_type(self, raw_df):
         """
         Look at the columns of the inputed data and determine
         what type of plots to plot 
         """
         # Get the columns
-        cols = temp_df.columns
+        cols = raw_df.columns
         # List of variables that uniquely identify what type of data it is  
         freq_sweel_list = ['Angular Frequency [rad/s]', 'Storage Modulus [Pa]', 'Loss Modulus [Pa]']
         amplitude_sweep = ['Shear Strain [1]', 'Storage Modulus [Pa]', 'Loss Modulus [Pa]']
@@ -128,5 +135,3 @@ class AntonPaarExtractor():
 
     def version(self) -> str:
         return '0.0.1'
-
-
