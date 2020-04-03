@@ -25,7 +25,8 @@ class AntonPaarExtractor():
             print("Stopping program.  Convert file and try again.")
             sys.exit()
 
-        temp_data = pd.read_excel(input_path)
+        temp_data = pd.read_excel(input_path, header=None)
+        project_row = temp_data[temp_data.iloc[:,0] == 'Project:']
         # Get the project from the top of the data
         test_indexes = temp_data.index[temp_data.iloc[:,0] == 'Test:'].tolist()
         # create a dictionary to hold the dataframes from the xslx file
@@ -43,7 +44,7 @@ class AntonPaarExtractor():
 
                 cleaned_df, test_name = self.process_single_excel(raw_df, output_folder_path)
                 modified_output_dict[test_name] = cleaned_df
-                raw_output_dict[test_name] = raw_df
+                raw_output_dict[test_name] = pd.concat([project_row, raw_df])
 
             # If it's the last number in the list
             else:
@@ -51,7 +52,7 @@ class AntonPaarExtractor():
                 raw_df = temp_data.iloc[test_start_index:,:]
                 cleaned_df, test_name = self.process_single_excel(raw_df, output_folder_path)
                 modified_output_dict[test_name] = cleaned_df
-                raw_output_dict[test_name] = raw_df
+                raw_output_dict[test_name] = pd.concat([project_row, raw_df])
 
         # Pass back a dictionary of dataframes
         return modified_output_dict, raw_output_dict
