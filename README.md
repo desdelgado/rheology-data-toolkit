@@ -1,7 +1,7 @@
 # README
 
 This package is meant to help users process their rheology data into an HDF5 file that can be
-uploaded to the (Materials Data Facility)[https://materialsdatafacility.org/].  The rheodata package
+uploaded to the [Materials Data Facility](https://materialsdatafacility.org/).  The rheodata package
 contains `extractors` that are instrument specific.  Currently the list of supported extractors is:
 
 * Anton Paar MCR302
