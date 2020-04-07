@@ -3,6 +3,7 @@ from rheodata.extractors.antonpaar import AntonPaarExtractor
 
 import unittest
 import pandas as pd
+# %%
 
 
 extractor = AntonPaarExtractor()
@@ -34,7 +35,6 @@ class TestAntonPaar(unittest.TestCase):
         modified_dict, raw_data_dict = extractor.import_rheo_data(self.multi_file_test, self.output_folder)
 
         self.assertIsInstance(raw_data_dict, dict)
-
 
     def test_raw_output_dictionary_contains_pandas(self):
         """ Test if the output is a dictonary of pandas dataframes'"""

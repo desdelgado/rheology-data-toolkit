@@ -3,9 +3,6 @@
 import pandas as pd
 import sys
 import os
-# %%
-
-
 
 
 # %%
@@ -13,12 +10,14 @@ class AntonPaarExtractor():
     def __init__(self):
         """ I believe I dont need this"""
 
-    def import_rheo_data(self, input_path:str, output_folder_path:str=''):
+    def import_rheo_data(self, input_path:str):
         """
         Intakes the input path of the xlsx file from the user and returns
         dictionary with each test from xlsx file as a dataframe as the value
         and the testname as the key
         """
+
+
         correct_filetype = self.check_file_type(input_path)
         if correct_filetype == False:
             print("File is not in .xlsx format")
@@ -32,6 +31,7 @@ class AntonPaarExtractor():
         # create a dictionary to hold the dataframes from the xslx file
         modified_output_dict = {}
         raw_output_dict = {}
+        cols_info_dict ={}
         for i in range(len(test_indexes)):
             
             # Test if were not the last one
@@ -42,22 +42,27 @@ class AntonPaarExtractor():
                 test_end_index = int(test_indexes[i+1]) - 1
                 raw_df = temp_data.iloc[test_start_index:test_end_index,:]
 
-                cleaned_df, test_name = self.process_single_excel(raw_df, output_folder_path)
+                cleaned_df, test_name, cols_info = self.process_single_excel(raw_df)
+
                 modified_output_dict[test_name] = cleaned_df
                 raw_output_dict[test_name] = pd.concat([project_row, raw_df])
+                cols_info_dict[test_name] = cols_info
 
             # If it's the last number in the list
             else:
                 test_start_index = int(test_indexes[i])
                 raw_df = temp_data.iloc[test_start_index:,:]
-                cleaned_df, test_name = self.process_single_excel(raw_df, output_folder_path)
+
+                cleaned_df, test_name, cols_info = self.process_single_excel(raw_df)
+
                 modified_output_dict[test_name] = cleaned_df
                 raw_output_dict[test_name] = pd.concat([project_row, raw_df])
+                cols_info_dict[test_name] = cols_info
 
         # Pass back a dictionary of dataframes
-        return modified_output_dict, raw_output_dict
+        return modified_output_dict, raw_output_dict, cols_info_dict
 
-    def process_single_excel(self, temp_data, output_folder:str='', save_data:bool=False):
+    def process_single_excel(self, temp_data):
         """
         Intakes dataframe from anton par and returns a csv with 
         just the data in it as well as the test name.  
@@ -95,16 +100,12 @@ class AntonPaarExtractor():
                 unit_columns.append(header)
 
         # Set the Columns to the first row and remove the first row
-        reshape_data.columns = unit_columns
+        #reshape_data.columns = unit_columns
         reshape_data = reshape_data.iloc[3:,:].reset_index(drop=True)
 
         self.parse_test_type(reshape_data)
 
-        # Save to a CSV file with the test name if the swtich is true
-        if save_data == True:
-            reshape_data.to_csv(output_folder + test_name + '.csv', index=False)
-
-        return reshape_data, test_name
+        return reshape_data, test_name, unit_columns
     
     def check_file_type(self, path):
         """ Check what type of file it is"""
