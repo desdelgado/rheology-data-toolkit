@@ -1,7 +1,6 @@
 # %%
 import h5py
 import pandas as pd
-from antonpaar import AntonPaarExtractor as APE
 import tables
 import os
 # %%
@@ -48,7 +47,7 @@ class rheo_data_transformer():
         with h5py.File(self.full_file_name, "a") as f:
 
             # Navigate through the different tests in the HDF5
-            for test_key in self.modified_dict.keys():
+            for test_key in self.modified_data.keys():
                 test_path = "Project/" + str(test_key)
                 
                 # Look through the keys in the test_metadata
