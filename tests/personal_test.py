@@ -9,19 +9,24 @@ from antonpaar import AntonPaarExtractor as APE
 from data import rheo_data_transformer
 
 # %%
-extractor = APE()
 
-multi_file_test = "/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata/extractors/test_data/excel_test_data/Steady State Viscosity Curve-LO50C_excel.xlsx"
+# %%
+machine = APE()
+
+multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/excel_test_data/two_tests_Steady State Viscosity Curve-LO50C_excel.xlsx"
 output_folder = "/Users/Delgado/Documents/Research/chimad_project/rheodata/extractors/test_data/"
 
 
-modified_dict, test_raw, cols_info = extractor.import_rheo_data(multi_file_test)
+modified_dict, test_raw, cols_info = machine.import_rheo_data(multi_file_test)
 
 test = rheo_data_transformer(modified_dict, test_raw, cols_info)
 
+test.load_to_hdf('swag')
 
-
+# %% 
 test_metadata = {
+    'Steady State Viscosity Curve-LO80C':
+    {
     "Temperature":25,
     "Test Type": "Strain Sweep",
     "Polyanion_MW":100000,
@@ -33,10 +38,33 @@ test_metadata = {
     "Solvent": "water",
     "Solvent_concentration":25,
     "columns":[]
+    },
+
+    'Steady State Viscosity Curve-75C':
+    {
+    "Temperature":100,
+    "Test Type": "Freq Sweep",
+    "Polyanion_MW":500,
+    "Polycation_MW": 5000,
+    "Polyanion_Charge_Fraction": 100,
+    "Polycation_Charge_Fraction": 100,
+    "Salt_Type": "potassium bromide",
+    "Salt_Concentration": 20,
+    "Solvent": "water",
+    "Solvent_concentration":10,
+    "columns":[]
+    }
 }
 
+# %%
+test.add_test_metadata(test_metadata)
 
-test.load_to_hdf("test3", test_metadata)
+
+# %%
+file_path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata/extractors/swag.hdf5"
+
+f = h5py.File(file_path, "r")
+
 # %%
 
 project_metadata = {

@@ -8,6 +8,7 @@ import os
 # %%
 class AntonPaarExtractor():
     def __init__(self):
+        self.test_names = []
         """ I believe I dont need this"""
 
     def import_rheo_data(self, input_path:str):
@@ -48,6 +49,8 @@ class AntonPaarExtractor():
                 raw_output_dict[test_name] = pd.concat([project_row, raw_df])
                 cols_info_dict[test_name] = cols_info
 
+                self.test_names.append(test_name)
+
             # If it's the last number in the list
             else:
                 test_start_index = int(test_indexes[i])
@@ -58,6 +61,8 @@ class AntonPaarExtractor():
                 modified_output_dict[test_name] = cleaned_df
                 raw_output_dict[test_name] = pd.concat([project_row, raw_df])
                 cols_info_dict[test_name] = cols_info
+
+                self.test_names.append(test_name)
 
         # Pass back a dictionary of dataframes
         return modified_output_dict, raw_output_dict, cols_info_dict
@@ -116,6 +121,7 @@ class AntonPaarExtractor():
             return False
 
     def parse_test_type(self, raw_df):
+    
         """
         Look at the columns of the inputed data and determine
         what type of plots to plot 
@@ -135,5 +141,11 @@ class AntonPaarExtractor():
             print("Amplitude Sweep")
             #return "amplitude_sweep"
 
+    def print_test_names(self):
+        if self.test_names == []:
+            print("No data loaded")
+        else:
+            print(self.test_names)
+            
     def version(self) -> str:
         return '0.0.1'
