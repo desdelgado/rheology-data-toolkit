@@ -18,7 +18,6 @@ class AntonPaarExtractor():
         and the testname as the key
         """
 
-
         correct_filetype = self.check_file_type(input_path)
         if correct_filetype == False:
             print("File is not in .xlsx format")

@@ -2,7 +2,7 @@
 from rheodata.extractors import antonpaar, data_converter
 import h5py
 import pandas as pd
-# %%
+
 
 rheometer = antonpaar.AntonPaarExtractor()
 
@@ -16,15 +16,14 @@ converter = data_converter.rheo_data_transformer(modified_dict, test_raw, cols_i
 
 converter.load_to_hdf('Shull_Group_Demo')
 
-# %%
 f = h5py.File('Shull_Group_Demo.hdf5', "r")
 print(f["Project"].keys())
 print(f["Project"]['Steady State Viscosity Curve-75C'].keys())
-# %%
+
 raw_data = pd.read_hdf('Shull_Group_Demo.hdf5', 'Project/Steady State Viscosity Curve-75C/raw_data')
 print(raw_data.head(10))
 f.close()
-# %%
+
 project_metadata = {
     "Project_Name": "Shull Group Demo",
     'Author': 'David Delgado',
@@ -35,7 +34,7 @@ project_metadata = {
 }
 
 converter.add_project_metadata("Shull_Group_Demo.hdf5", project_metadata)
-# %%
+
 f = h5py.File('Shull_Group_Demo.hdf5', "r")
 print(f.attrs["Project_Name"])
 print(f.attrs["Author"])
@@ -45,7 +44,7 @@ print(f.attrs["Polymer"])
 print(f.attrs["Instrument"])
 f.close()
 
-# %% 
+
 test_metadata = {
     'Steady State Viscosity Curve-LO80C':
     {
@@ -80,7 +79,6 @@ test_metadata = {
 
 converter.add_test_metadata(test_metadata)
 
-# %%
 f = h5py.File('Shull_Group_Demo.hdf5', "r")
 print(f["Project/Steady State Viscosity Curve-75C"].attrs["Temperature"])
 print(f["Project/Steady State Viscosity Curve-LO80C"].attrs["Temperature"])
