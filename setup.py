@@ -1,12 +1,20 @@
 from setuptools import setup
 
-setup(
-    name='rheodata',
-    version='0.0.1', 
-    description='Package to exstract rheometer data', 
-    url='https://github.com/desdelgado/rheology-data-toolkit', 
-    author='desdelgado', 
-    license='MIT', 
-    install_requires=['pandas'], 
-    zip_safe=False
-    )
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
+    name="rheodata", # Replace with your own username
+    version="0.0.1",
+    author="David Delgado",
+    author_email="daviddelgado2020@u.northwestern.com",
+    description="Packge to help process rheology data",
+    url="https://github.com/desdelgado/rheology-data-toolkit",
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires='>=3.6',
+)
