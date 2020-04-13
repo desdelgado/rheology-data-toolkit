@@ -87,3 +87,21 @@ print(f["Project/Steady State Viscosity Curve-75C"].attrs["Polyanion_MW"])
 print(f["Project/Steady State Viscosity Curve-LO80C"].attrs["Polyanion_MW"])
 
 f.close()
+
+# %%
+
+path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/ARES_G2/temperature_ramp/Copy of Siqi_Temp Ramp.xls"
+
+ARES = ARES_G2Extractor(path)
+
+modified_output, raw_output, cols_info = ARES.process_workbook()
+
+# %%
+
+# %%
+
+path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/ARES_G2/mixed_test_types/Copy of JeT_5k100-5k100_100mgml_amp_frq_swp_672017 copy.xls"
+
+ARES = ARES_G2Extractor(path)
+
+modified_output, raw_output, cols_info = ARES.process_workbook()

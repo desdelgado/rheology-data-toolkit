@@ -1,17 +1,13 @@
-# %%
 import pandas as pd
+import numpy as np
 import os
 import sys
-
-# %%
-
-# TODO
 
 class ARES_G2Extractor():
     def __init__(self, workbook_path=None):
         self.workbook_path = workbook_path
 
-    def process_raw_data(self):
+    def process_workbook(self):
 
         self.is_correct_file_type()
 
@@ -37,8 +33,9 @@ class ARES_G2Extractor():
 
     def get_raw_data(self, page_name):
         temp_data = temp_data = self.workbook[page_name]
-        temp_series = pd.Series(page_name)
-        temp_data = temp_data.append(temp_series)
+        temp_row = pd.DataFrame([[np.nan] * temp_data.shape[1]], columns=temp_data.columns)
+        temp_row.iloc[0,0] = page_name
+        temp_data = pd.concat([temp_row, temp_data])
         return temp_data
                   
     def get_col_info(self, page_name):
@@ -64,29 +61,3 @@ class ARES_G2Extractor():
             return True
         else:
             return False     
-
-
-
-# seperate the details file
-# For each page of the workbook (key in dictionary)
-#   Split into raw data
-#   Get just the data and capture the col units
-
-# %%
-
-path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/ARES_G2/temperature_ramp/Copy of Siqi_Temp Ramp.xls"
-
-ARES = ARES_G2Extractor(path)
-
-modified_output, raw_output, cols_info = ARES.process_raw_data()
-
-# %%
-
-# %%
-
-path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/ARES_G2/temperature_ramp/Copy of Siqi_Temp Ramp.xls"
-
-
-workbook = pd.read_excel(path, sheet_name=None)
-
-# %%
