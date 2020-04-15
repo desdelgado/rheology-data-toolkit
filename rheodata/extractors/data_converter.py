@@ -32,8 +32,6 @@ class rheo_data_transformer():
             self.modified_data[clean_key].to_hdf(self.full_file_name, key=clean_key_path, mode='a')
             self.raw_data[raw_key].to_hdf(self.full_file_name, key=raw_key_path, mode='a')
 
-            #self.add_test_metadata(self.full_file_name, metadata, test_path, clean_key)
-
 
     def add_project_metadata(self, file_name, metadata):
         

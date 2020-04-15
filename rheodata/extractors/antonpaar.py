@@ -118,6 +118,30 @@ class AntonPaarExtractor():
             return True
         else:
             return False
+    
+    def save_analyze_dataframes(self, file_path, output_folder_path:str=''):
+        analyze_dict = self.make_analyze_dataframes(file_path)
+
+        for test_key in analyze_dict.keys():
+            temp_df = analyze_dict[test_key]
+
+            save_path = output_folder_path + test_key + ".csv"
+
+            temp_df.to_csv(save_path)
+
+
+    def make_analyze_dataframes(self, path):
+        modified_data, raw_data, cols = self.import_rheo_data(path)
+
+        # Need to link the cols to the file 
+        analyze_dict = {}
+        for test in list(modified_data.keys()):
+            temp_df = modified_data[test]
+            temp_df.columns = cols[test]
+            analyze_dict[test] = temp_df
+
+        return analyze_dict
+    
 
     def parse_test_type(self, raw_df):
     

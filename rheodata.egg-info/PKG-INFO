@@ -1,10 +1,14 @@
-Metadata-Version: 1.0
+Metadata-Version: 1.2
 Name: rheodata
 Version: 0.0.1
-Summary: Package to exstract rheometer data
-Home-page: https://github.com/desdelgado/ChiMAD_rehology
-Author: desdelgado
-Author-email: UNKNOWN
-License: MIT
+Summary: Packge to help process rheology data
+Home-page: https://github.com/desdelgado/rheology-data-toolkit
+Author: David Delgado
+Author-email: daviddelgado2020@u.northwestern.com
+License: UNKNOWN
 Description: UNKNOWN
 Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
