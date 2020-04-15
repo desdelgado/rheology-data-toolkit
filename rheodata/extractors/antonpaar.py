@@ -125,7 +125,7 @@ class AntonPaarExtractor():
         for test_key in analyze_dict.keys():
             temp_df = analyze_dict[test_key]
 
-            save_path = output_folder_path + test_key + ".csv"
+            save_path = output_folder_path+ "/" + test_key + ".csv"
 
             temp_df.to_csv(save_path)
 

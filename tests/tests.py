@@ -1,5 +1,5 @@
 from rheodata.extractors.antonpaar import AntonPaarExtractor
-from rheodata.extractors.data_converter import rheo_data_transformer
+from rheodata.data_converter import rheo_data_transformer
 
 import unittest
 import pandas as pd

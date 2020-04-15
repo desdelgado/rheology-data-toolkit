@@ -1,18 +1,23 @@
 # %%
-from rheodata.extractors import antonpaar, data_converter
+from rheodata.extractors import antonpaar
+from rheodata import data_converter
 import h5py
 import pandas as pd
 
-
 rheometer = antonpaar.AntonPaarExtractor()
 
-multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/excel_test_data/two_tests_Steady State Viscosity Curve-LO50C_excel.xlsx"
-output_folder = "/Users/Delgado/Documents/Research/chimad_project/rheodata/extractors/test_data/"
+multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/excel_test_data/two_tests_Steady State Viscosity Curve-LO50C_excel.xlsx"
+output_folder = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/test_output"
 
 
 modified_dict, test_raw, cols_info = rheometer.import_rheo_data(multi_file_test)
 
 converter = data_converter.rheo_data_transformer(modified_dict, test_raw, cols_info)
+# Test if you can get a dataframe
+
+test = rheometer.make_analyze_dataframes(multi_file_test)
+
+rheometer.save_analyze_dataframes(multi_file_test, output_folder_path=output_folder)
 
 converter.load_to_hdf('Shull_Group_Demo')
 
