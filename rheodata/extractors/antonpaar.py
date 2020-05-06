@@ -17,13 +17,6 @@ class AntonPaarExtractor():
         dictionary with each test from xlsx file as a dataframe as the value
         and the testname as the key
         """
-
-        correct_filetype = self.check_file_type(input_path)
-        if correct_filetype == False:
-            print("File is not in .xlsx format")
-            print("Stopping program.  Convert file and try again.")
-            sys.exit()
-
         temp_data = pd.read_excel(input_path, header=None)
         project_row = temp_data[temp_data.iloc[:,0] == 'Project:']
         # Get the project from the top of the data
@@ -104,7 +97,6 @@ class AntonPaarExtractor():
                 unit_columns.append(header)
 
         # Set the Columns to the first row and remove the first row
-        #reshape_data.columns = unit_columns
         reshape_data = reshape_data.iloc[3:,:].reset_index(drop=True)
 
         self.parse_test_type(reshape_data)

@@ -1,6 +1,7 @@
 README.md
 setup.py
 rheodata/__init__.py
+rheodata/data_converter.py
 rheodata.egg-info/PKG-INFO
 rheodata.egg-info/SOURCES.txt
 rheodata.egg-info/dependency_links.txt
@@ -8,4 +9,3 @@ rheodata.egg-info/top_level.txt
 rheodata/extractors/ARES_G2.py
 rheodata/extractors/__init__.py
 rheodata/extractors/antonpaar.py
-rheodata/extractors/data_converter.py

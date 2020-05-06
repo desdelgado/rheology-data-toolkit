@@ -19,9 +19,9 @@ test = rheometer.make_analyze_dataframes(multi_file_test)
 
 rheometer.save_analyze_dataframes(multi_file_test, output_folder_path=output_folder)
 
-converter.load_to_hdf('Shull_Group_Demo')
+converter.load_to_hdf('CHIMAD_Demo_Demo')
 
-f = h5py.File('Shull_Group_Demo.hdf5', "r")
+f = h5py.File('CHIMAD_Demo.hdf5', "r")
 print(f["Project"].keys())
 print(f["Project"]['Steady State Viscosity Curve-75C'].keys())
 
