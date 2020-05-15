@@ -30,6 +30,9 @@ in your anaconda prompt.
 For a tutorial and guide for how to use some of the functions there is a jupyter notebook in 
 `getting_started/Demo.ipynb`.
 
+## To Do 
+Documentation still needs to be added
+
 
 
 
