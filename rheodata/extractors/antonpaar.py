@@ -26,6 +26,7 @@ class AntonPaarExtractor():
         modified_output_dict = {}
         raw_output_dict = {}
         cols_info_dict = {}
+        units_dict = {}
         for i in range(len(test_indexes)):
 
             # Test if were not the last one
@@ -36,12 +37,13 @@ class AntonPaarExtractor():
                 test_end_index = int(test_indexes[i+1]) - 1
                 raw_df = temp_data.iloc[test_start_index:test_end_index, :]
 
-                cleaned_df, test_name, cols_info = self.process_single_excel(
+                cleaned_df, test_name, cols_info, units_info = self.process_single_excel(
                     raw_df)
 
                 modified_output_dict[test_name] = cleaned_df
                 raw_output_dict[test_name] = pd.concat([project_row, raw_df])
                 cols_info_dict[test_name] = cols_info
+                units_dict[test_name] = units_info
 
                 self.test_names.append(test_name)
 
@@ -50,17 +52,18 @@ class AntonPaarExtractor():
                 test_start_index = int(test_indexes[i])
                 raw_df = temp_data.iloc[test_start_index:, :]
 
-                cleaned_df, test_name, cols_info = self.process_single_excel(
+                cleaned_df, test_name, cols_info, units_info = self.process_single_excel(
                     raw_df)
 
                 modified_output_dict[test_name] = cleaned_df
                 raw_output_dict[test_name] = pd.concat([project_row, raw_df])
                 cols_info_dict[test_name] = cols_info
+                units_dict[test_name] = units_info
 
                 self.test_names.append(test_name)
 
         # Pass back a dictionary of dataframes
-        return modified_output_dict, raw_output_dict, cols_info_dict
+        return modified_output_dict, raw_output_dict, cols_info_dict, units_dict
 
     def process_single_excel(self, temp_data):
         """
@@ -87,26 +90,28 @@ class AntonPaarExtractor():
         reshape_data = temp_data.iloc[start_row_index:, 1:]
 
         # TODO keep track of the units
-        unit_columns = []
+        col_names = []
+        units = []
         # Add the unit to the first line and then make it the column names
         for i in range(0, len(reshape_data.iloc[0, :])):
             unit = str(reshape_data.iloc[2, i])
-            header = str(reshape_data.iloc[0, i])
+            col = str(reshape_data.iloc[0, i])
 
             # If the third row doesn't have units
             if unit != 'nan':
                 # Add the units
-                unit_header = header + " " + unit
-                unit_columns.append(unit_header)
+                col_names.append(col)
+                units.append(unit)
             else:
-                unit_columns.append(header)
+                col_names.append(col)
+                units.append('NaN')
 
         # Set the Columns to the first row and remove the first row
         reshape_data = reshape_data.iloc[3:, :].reset_index(drop=True)
 
         self.parse_test_type(reshape_data)
 
-        return reshape_data, test_name, unit_columns
+        return reshape_data, test_name, col_names, units
 
     def check_file_type(self, path):
         """ Check what type of file it is"""

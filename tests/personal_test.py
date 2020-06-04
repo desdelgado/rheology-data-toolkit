@@ -3,25 +3,48 @@
 import sys, os
 sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata/extractors")
 
-
+import h5py
 import pandas as pd
 from antonpaar import AntonPaarExtractor as APE
-from data import rheo_data_transformer
+# %%
+sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata")
+from data_converter import rheo_data_transformer
 
 # %%
 
 # %%
 machine = APE()
 
-multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/test_data/excel_test_data/two_tests_Steady State Viscosity Curve-LO50C_excel.xlsx"
+multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/excel_test_data/Steady State Viscosity Curve-LO50C_excel.xlsx"
 output_folder = "/Users/Delgado/Documents/Research/chimad_project/rheodata/extractors/test_data/"
 
 
-modified_dict, test_raw, cols_info = machine.import_rheo_data(multi_file_test)
-
-test = rheo_data_transformer(modified_dict, test_raw, cols_info)
+modified_dict, test_raw, cols_info, units_info = machine.import_rheo_data(multi_file_test)
+# %%
+test = rheo_data_transformer(modified_data=modified_dict, raw_data=test_raw, cols_info=cols_info, units=units_info)
 
 test.load_to_hdf('swag')
+
+# %%
+f = h5py.File("swag.hdf5", "r")
+print(f["Project"].keys())
+print(f["Project"]['Steady State Viscosity Curve-55C'].keys())
+print(type(f["Project"]['Steady State Viscosity Curve-55C'].attrs["columns"]))
+
+test = f["Project"]['Steady State Viscosity Curve-55C'].attrs["columns"]
+
+raw_data = pd.read_hdf(save_file_name, 'Project/Steady State Viscosity Curve-55C/raw_data')
+print(raw_data.head(10))
+f.close()
+
+f = h5py.File(save_file_name +'.hdf5', "r")
+print(f.attrs["Project_Name"])
+print(f.attrs["Author"])
+print(f.attrs["Doi"])
+print(f.attrs["Test_Type"])
+print(f.attrs["Polymer"])
+print(f.attrs["Instrument"])
+f.close()
 
 # %% 
 test_metadata = {
