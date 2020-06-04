@@ -3,19 +3,18 @@ import numpy as np
 import os
 import sys
 
+
 class ARES_G2Extractor():
     def __init__(self, workbook_path=None):
         self.workbook_path = workbook_path
 
     def process_workbook(self):
 
-        self.is_correct_file_type()
-
         self.workbook = pd.read_excel(self.workbook_path, sheet_name=None)
 
         modified_output_dict = {}
         raw_output_dict = {}
-        cols_info_dict ={}
+        cols_info_dict = {}
         for page in self.workbook.keys():
             if page == "Details":
                 pass
@@ -29,20 +28,21 @@ class ARES_G2Extractor():
     def get_processed_data(self, page_name):
         temp_data = temp_data = self.workbook[page_name]
 
-        return temp_data.iloc[2:,:]    
+        return temp_data.iloc[2:, :]
 
     def get_raw_data(self, page_name):
         temp_data = temp_data = self.workbook[page_name]
-        temp_row = pd.DataFrame([[np.nan] * temp_data.shape[1]], columns=temp_data.columns)
-        temp_row.iloc[0,0] = page_name
+        temp_row = pd.DataFrame(
+            [[np.nan] * temp_data.shape[1]], columns=temp_data.columns)
+        temp_row.iloc[0, 0] = page_name
         temp_data = pd.concat([temp_row, temp_data])
         return temp_data
-                  
+
     def get_col_info(self, page_name):
         temp_data = self.workbook[page_name]
 
-        cols = temp_data.iloc[0,:]
-        units = temp_data.iloc[1,:].fillna("", axis=0)
+        cols = temp_data.iloc[0, :]
+        units = temp_data.iloc[1, :].fillna("", axis=0)
         col_info = list(cols + " (" + units + ")")
 
         return col_info
@@ -60,4 +60,4 @@ class ARES_G2Extractor():
         if ext == ".xls":
             return True
         else:
-            return False     
+            return False

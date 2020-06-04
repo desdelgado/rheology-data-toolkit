@@ -3,14 +3,18 @@ import h5py
 import pandas as pd
 import tables
 import os
+import json
 # %%
 class rheo_data_transformer():
 
-    def __init__(self, modified_data=None, raw_data=None, cols_info=None):
+    def __init__(self, modified_data:dict=None, raw_data:dict=None,
+     cols_info:dict=None, units:dict=None):
+
         self.modified_data = modified_data
         self.raw_data = raw_data
         self.cols_info = cols_info
         self.full_file_name = ''
+        self.units = units
 
         # TODO add different metadata to each test
 
@@ -31,23 +35,38 @@ class rheo_data_transformer():
 
             self.modified_data[clean_key].to_hdf(self.full_file_name, key=clean_key_path, mode='a')
             self.raw_data[raw_key].to_hdf(self.full_file_name, key=raw_key_path, mode='a')
+        self.add_cols_metadata()
+
+    def add_cols_metadata(self):
+           with h5py.File(self.full_file_name, "a") as f:
+            # Navigate through the different tests in the HDF5
+            for test_key in self.modified_data.keys():
+                test_path = "Project/" + str(test_key)
+                print(self.cols_info[test_key])
+                print(self.units[test_key])
+                colum_metadata = {
+                    'names': self.cols_info[test_key],
+                    'units': self.units[test_key]
+                    }
+
+                colum_metadata = json.dumps(colum_metadata)
+
+                f[test_path].attrs['columns'] = colum_metadata
 
 
     def add_project_metadata(self, file_name, metadata):
         
         with h5py.File(file_name, "a") as f:
-
             for key in metadata.keys():
                 f.attrs[key] = metadata[key]
 
     def add_test_metadata(self, test_metadata):
-
+        # TODO refractor this
         with h5py.File(self.full_file_name, "a") as f:
 
             # Navigate through the different tests in the HDF5
             for test_key in self.modified_data.keys():
                 test_path = "Project/" + str(test_key)
-                
                 # Look through the keys in the test_metadata
                 for metadata_test_key in test_metadata.keys():
 
