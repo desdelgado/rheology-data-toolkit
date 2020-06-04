@@ -6,7 +6,7 @@ import pandas as pd
 
 rheometer = antonpaar.AntonPaarExtractor()
 
-multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/excel_test_data/two_tests_Steady State Viscosity Curve-LO50C_excel.xlsx"
+multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/excel_test_data/Steady State Viscosity Curve-LO50C_excel.xlsx"
 output_folder = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/test_output"
 
 
@@ -19,28 +19,37 @@ test = rheometer.make_analyze_dataframes(multi_file_test)
 
 rheometer.save_analyze_dataframes(multi_file_test, output_folder_path=output_folder)
 
-converter.load_to_hdf('CHIMAD_Demo_Demo')
+save_file_name = "CHiMaD_Demo_hdf5.hdf5"
+converter.load_to_hdf('CHiMaD_Demo_hdf5')
 
-f = h5py.File('CHIMAD_Demo.hdf5', "r")
+f = h5py.File(save_file_name, "r")
 print(f["Project"].keys())
-print(f["Project"]['Steady State Viscosity Curve-75C'].keys())
+print(f["Project"]['Steady State Viscosity Curve-55C'].keys())
 
-raw_data = pd.read_hdf('Shull_Group_Demo.hdf5', 'Project/Steady State Viscosity Curve-75C/raw_data')
+raw_data = pd.read_hdf(save_file_name, 'Project/Steady State Viscosity Curve-55C/raw_data')
 print(raw_data.head(10))
 f.close()
 
 project_metadata = {
-    "Project_Name": "Shull Group Demo",
-    'Author': 'David Delgado',
-    "Doi": "https//8675309",
-    'Test_Type': "Strain Sweep",
-    'Polymer': ['polystyrene sulfonate', 'poly (4-vinylpyridine)'],
-    "Instrument": "Anton Paar MCR32"
+    'data origin':'testing'
 }
 
-converter.add_project_metadata("Shull_Group_Demo.hdf5", project_metadata)
+project_metadata = {
+    'data origin':{
+        "project name": "Linseed Oil Steady State Viscosity Curves",
+        'Author': ['Delgado, David'],
+        'Doi': 'https//8675309'
+    },
+    'instrument':{
+        'type': 'rheometer',
+        'make': 'Anton Paar',
+        'model': 'MCR302'
+    }
+}
 
-f = h5py.File('Shull_Group_Demo.hdf5', "r")
+converter.add_project_metadata(save_file_name, project_metadata)
+
+f = h5py.File(save_file_name +'.hdf5', "r")
 print(f.attrs["Project_Name"])
 print(f.attrs["Author"])
 print(f.attrs["Doi"])
@@ -84,7 +93,7 @@ test_metadata = {
 
 converter.add_test_metadata(test_metadata)
 
-f = h5py.File('Shull_Group_Demo.hdf5', "r")
+f = h5py.File(save_file_name +'.hdf5', "r")
 print(f["Project/Steady State Viscosity Curve-75C"].attrs["Temperature"])
 print(f["Project/Steady State Viscosity Curve-LO80C"].attrs["Temperature"])
 
