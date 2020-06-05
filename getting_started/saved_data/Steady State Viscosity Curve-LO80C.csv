@@ -1,4 +1,4 @@
-,Point No.,Time [s],Shear Rate [1/s],Shear Stress [Pa],Viscosity [mPa·s],Torque [µN·m],Status
+,Point No.,Time,Shear Rate,Shear Stress,Viscosity,Torque,Status
 0,1,10,0.01,-0.00022404,-22.4,-0.0073426,Dy_auto
 1,2,20,0.0147,-0.00024442,-16.7,-0.0080105,Dy_auto
 2,3,30,0.0215,-8.3392e-05,-3.9,-0.002733,Dy_auto
