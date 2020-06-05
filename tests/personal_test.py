@@ -24,17 +24,17 @@ modified_dict, test_raw, cols_info, units_info = machine.import_rheo_data(multi_
 # %%
 test = rheo_data_transformer(modified_data=modified_dict, raw_data=test_raw, cols_info=cols_info, units=units_info)
 
-test.load_to_hdf('swag')
+test.load_to_hdf('hdf5_pickle_fix')
 
 # %%
-f = h5py.File("swag.hdf5", "r")
+f = h5py.File("hdf5_pickle_fix.hdf5", "r")
 print(f["Project"].keys())
 print(f["Project"]['Steady State Viscosity Curve-55C'].keys())
 print(type(f["Project"]['Steady State Viscosity Curve-55C'].attrs["columns"]))
 
 test = f["Project"]['Steady State Viscosity Curve-55C'].attrs["columns"]
 
-raw_data = pd.read_hdf(save_file_name, 'Project/Steady State Viscosity Curve-55C/raw_data')
+raw_data = pd.read_hdf('hdf5_pickle_fix.hdf5', 'Project/Steady State Viscosity Curve-55C/clean_data')
 print(raw_data.head(10))
 f.close()
 

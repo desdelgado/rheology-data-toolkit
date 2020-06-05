@@ -4,11 +4,15 @@ import pandas as pd
 import tables
 import os
 import json
+
+import pickle
+
 # %%
 class rheo_data_transformer():
 
     def __init__(self, modified_data:dict=None, raw_data:dict=None,
      cols_info:dict=None, units:dict=None):
+        pickle.HIGHEST_PROTOCOL = 4
 
         self.modified_data = modified_data
         self.raw_data = raw_data
