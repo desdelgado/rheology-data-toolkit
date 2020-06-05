@@ -42,8 +42,6 @@ class rheo_data_transformer():
             # Navigate through the different tests in the HDF5
             for test_key in self.modified_data.keys():
                 test_path = "Project/" + str(test_key)
-                print(self.cols_info[test_key])
-                print(self.units[test_key])
                 colum_metadata = {
                     'names': self.cols_info[test_key],
                     'units': self.units[test_key]

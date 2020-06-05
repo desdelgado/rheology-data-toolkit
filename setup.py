@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rheodata", 
-    version="0.0.2",
+    version="0.0.3",
     author="David Delgado",
     author_email="daviddelgado2020@u.northwestern.com",
     description="Packge to help process rheology data",

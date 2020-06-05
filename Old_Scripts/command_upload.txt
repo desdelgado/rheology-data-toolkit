@@ -1,0 +1,4 @@
+https://stackoverflow.com/questions/52016336/how-to-upload-new-versions-of-project-to-pypi-with-twine
+
+python -m setup.py bdist_wheel
+python -m twine upload --skip-existing dist/*

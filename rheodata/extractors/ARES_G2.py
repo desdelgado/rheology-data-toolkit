@@ -15,6 +15,7 @@ class ARES_G2Extractor():
         modified_output_dict = {}
         raw_output_dict = {}
         cols_info_dict = {}
+        units_info_dict = {}
         for page in self.workbook.keys():
             if page == "Details":
                 pass
@@ -22,11 +23,12 @@ class ARES_G2Extractor():
                 modified_output_dict[page] = self.get_processed_data(page)
                 raw_output_dict[page] = self.get_raw_data(page)
                 cols_info_dict[page] = self.get_col_info(page)
+                units_info_dict[page] = self.get_units_info(page)
 
-        return modified_output_dict, raw_output_dict, cols_info_dict
+        return modified_output_dict, raw_output_dict, cols_info_dict, units_info_dict
 
     def get_processed_data(self, page_name):
-        temp_data = temp_data = self.workbook[page_name]
+        temp_data = self.workbook[page_name]
 
         return temp_data.iloc[2:, :]
 
@@ -42,10 +44,17 @@ class ARES_G2Extractor():
         temp_data = self.workbook[page_name]
 
         cols = temp_data.iloc[0, :]
-        units = temp_data.iloc[1, :].fillna("", axis=0)
-        col_info = list(cols + " (" + units + ")")
+        col_info = list(cols)
 
         return col_info
+
+    def get_units_info(self, page_name):
+        temp_data = self.workbook[page_name]
+
+        units = temp_data.iloc[1, :].fillna("", axis=0)
+        units_info = list(units)
+
+        return units_info
 
     def is_correct_file_type(self):
         correct_file_type = self.check_file_type()

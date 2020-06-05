@@ -6,6 +6,7 @@ sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheod
 import h5py
 import pandas as pd
 from antonpaar import AntonPaarExtractor as APE
+from ARES_G2 import ARES_G2Extractor 
 # %%
 sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata")
 from data_converter import rheo_data_transformer
@@ -106,6 +107,23 @@ f.attrs["name"]
 test = pd.read_hdf('swag.h5', 'top/Steady State Viscosity Curve/clean_data')
 # %%
 f.close()
+# %%  #### ARES tests ####
+
+path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/ARES_G2/temperature_ramp/Copy of Siqi_Temp Ramp.xls"
+
+ARES = ARES_G2Extractor(path)
+
+modified_output, raw_output, cols_info, units_info = ARES.process_workbook()
+
+
+test = rheo_data_transformer(modified_data=modified_output, raw_data=raw_output, cols_info=cols_info, units=units_info)
+
+test.load_to_hdf('test_package')
+
+f = h5py.File("test_package.hdf5", "r")
+print(f["Project"].keys())
+print(f["Project"]['Temperature Ramp - 1'].keys())
+
 
 
 # %%   ###### TESTS #######

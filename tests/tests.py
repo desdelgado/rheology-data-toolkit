@@ -1,12 +1,17 @@
-from rheodata.extractors.antonpaar import AntonPaarExtractor
-from rheodata.data_converter import rheo_data_transformer
+import sys, os
+sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata/extractors")
+
+import h5py
+import pandas as pd
+from antonpaar import AntonPaarExtractor as APE
+from ARES_G2 import ARES_G2Extractor 
+# %%
+sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata")
+from data_converter import rheo_data_transformer
 
 import unittest
-import pandas as pd
-import h5py
-import os
 
-extractor = AntonPaarExtractor()
+extractor = APE()
 #converter = data_converter()
 
 class TestAntonPaar(unittest.TestCase):
@@ -14,10 +19,10 @@ class TestAntonPaar(unittest.TestCase):
     def setUp(self):
         self.multi_file_test = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/Anton_Paar/excel_test_data/two_tests_Steady State Viscosity Curve-LO50C_excel.xlsx"
 
-        self.modified_dict, self.raw_data_dict, self.cols = extractor.import_rheo_data(self.multi_file_test)
+        self.modified_dict, self.raw_data_dict, self.cols, self.units = extractor.import_rheo_data(self.multi_file_test)
 
         # Inilize the class to convert
-        self.converter = rheo_data_transformer(self.modified_dict, self.raw_data_dict, self.cols)
+        self.converter = rheo_data_transformer(self.modified_dict, self.raw_data_dict, self.cols, self.units)
         self.converter.load_to_hdf("test")
 
     def test_modified_output_isdictionary(self):

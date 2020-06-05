@@ -132,7 +132,7 @@ class AntonPaarExtractor():
             temp_df.to_csv(save_path)
 
     def make_analyze_dataframes(self, path):
-        modified_data, raw_data, cols = self.import_rheo_data(path)
+        modified_data, raw_data, cols, units = self.import_rheo_data(path)
 
         # Need to link the cols to the file
         analyze_dict = {}
