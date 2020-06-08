@@ -11,6 +11,8 @@ from ARES_G2 import ARES_G2Extractor
 sys.path.append("C:/Users/Delgado/Documents/Research/rheology-data-toolkit/rheodata")
 from data_converter import rheo_data_transformer
 
+import json
+
 # %%
 
 # %%
@@ -45,6 +47,32 @@ print(f.attrs["Doi"])
 print(f.attrs["Test_Type"])
 print(f.attrs["Polymer"])
 print(f.attrs["Instrument"])
+f.close()
+# %% add test metadata as json file
+
+sample_metadata = {
+    'data origin':{
+        "project name": "Test_project",
+        "authors":["Delgado, David E.", "Solo, Han F."],
+        "ORCID":["8888", "1234"],
+        "DOI": "https//8675309"
+    },
+    'instrument':{
+        "type": "rheometer",
+        "make": "Anton Paar",
+        "model": "MCR 302",
+        "additional information":"50 mm plates"
+    },
+    "polydat":{
+        "polymer_place_holder":"Test"
+    }
+}
+
+test.add_project_metadata('hdf5_pickle_fix.hdf5', sample_metadata)
+
+f = h5py.File("hdf5_pickle_fix.hdf5", "r")
+test_project = f["Project"].attrs["project_metadata"]
+test_json = json.loads(test_project)
 f.close()
 
 # %% 

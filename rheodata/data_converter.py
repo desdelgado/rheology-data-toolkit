@@ -55,13 +55,12 @@ class rheo_data_transformer():
 
                 f[test_path].attrs['columns'] = colum_metadata
 
+    def add_project_metadata(self, file_name:str, metadata:str):
+        project_metadata = json.dumps(metadata)
 
-    def add_project_metadata(self, file_name, metadata):
-        
         with h5py.File(file_name, "a") as f:
-            for key in metadata.keys():
-                f.attrs[key] = metadata[key]
-
+            f["Project"].attrs["project_metadata"] = project_metadata
+    
     def add_test_metadata(self, test_metadata):
         # TODO refractor this
         with h5py.File(self.full_file_name, "a") as f:
