@@ -109,7 +109,7 @@ test = pd.read_hdf('swag.h5', 'top/Steady State Viscosity Curve/clean_data')
 f.close()
 # %%  #### ARES tests ####
 
-path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/ARES_G2/temperature_ramp/Copy of Siqi_Temp Ramp.xls"
+path = "C:/Users/Delgado/Documents/Research/rheology-data-toolkit/tests/test_data/ARES_G2/mixed_test_types/Copy of JeT_5k100-5k100_100mgml_amp_frq_swp_672017 copy.xls"
 
 ARES = ARES_G2Extractor(path)
 
@@ -118,7 +118,7 @@ modified_output, raw_output, cols_info, units_info = ARES.process_workbook()
 
 test = rheo_data_transformer(modified_data=modified_output, raw_data=raw_output, cols_info=cols_info, units=units_info)
 
-test.load_to_hdf('test_package')
+test.load_to_hdf('AGRES_2_test')
 
 f = h5py.File("test_package.hdf5", "r")
 print(f["Project"].keys())
