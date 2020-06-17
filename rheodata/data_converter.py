@@ -69,26 +69,14 @@ class add_rheo_metadata():
         with h5py.File(self.file_path, "a") as f:
             f["Project"].attrs["project_metadata"] = project_metadata
     
-    def add_test_metadata(self, test_metadata):
-        pass
-        '''
-        # TODO refractor this
+    def add_test_metadata(self, test_name:str, test_metadata):
+        """Adds metadata to one test subfolder"""
+        test_metadata = json.dumps(test_metadata)
+
         with h5py.File(self.file_path, "a") as f:
+            try:
+                f["Project"][test_name].attrs["test_metadata"] = test_metadata
+            except: # Temp hold while I figure out a better way to do this
+                print("Didn't add metadata for:" + test_name)
 
-            # Navigate through the different tests in the HDF5
-            for test_key in self.modified_data.keys():
-                test_path = "Project/" + str(test_key)
-                # Look through the keys in the test_metadata
-                for metadata_test_key in test_metadata.keys():
-
-                    # If the metadata test tkey key matches the name of the test name
-                    if test_key == metadata_test_key:
-                        # Load the attributes in that tests metadata 
-                        for attr_keys in test_metadata[metadata_test_key].keys():
-
-                            if attr_keys != 'column':
-                                f[test_path].attrs[attr_keys] = test_metadata[metadata_test_key][attr_keys]
-                            else:
-                                # Load in the right cols according to
-                                f[test_path].attrs[attr_keys] = test_metadata[metadata_test_key][self.cols_info[metadata_test_key]]
-        '''
+        
