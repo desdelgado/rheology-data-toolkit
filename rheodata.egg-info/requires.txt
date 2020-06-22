@@ -1,0 +1,6 @@
+h5py>=2.10.0
+tables>=3.6.1
+jsonschema>=3.2.0
+pickleshare>=0.7.5
+pandas>=1.0.4
+xlrd>=1.2.0
