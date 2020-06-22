@@ -12,15 +12,14 @@ This package also contains a `data_converter` file that will take the raw and pa
 and convert them into a single HDF5 file.  One can also add metadata to the overall project and to individual
 tests.
 
-## Installation 
-This package is currently published on PyPi and can be installed by:
+## Installation
+Before installing, make sure to pip install the [`xlrd`](https://xlrd.readthedocs.io/en/latest/ package).
 
+This package is currently published on PyPi and can be installed by:
 `pip install rheodata`
 
 If you are using anaconda, first make sure you have `pip` installed and then run:
-
 `pip install rheodata`
-
 
 in your anaconda prompt.
 
