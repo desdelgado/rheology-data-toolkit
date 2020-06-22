@@ -9,6 +9,7 @@ import pickle
 
 # %%
 class rheo_data_transformer():
+    """Organizes rheology dictionaries into HDF5 file"""
 
     def __init__(self, modified_data:dict=None, raw_data:dict=None,
      cols_info:dict=None, units:dict=None):
@@ -55,30 +56,27 @@ class rheo_data_transformer():
 
                 f[test_path].attrs['columns'] = colum_metadata
 
+class add_rheo_metadata():
+    """Adds metadata to files"""
 
-    def add_project_metadata(self, file_name, metadata):
+    def __init__(self, file_path:str=None):
+        self.file_path = file_path
+
+    # TODO figure out where to optimal place to put this is
+    def add_project_metadata(self, metadata:str):
+        project_metadata = json.dumps(metadata)
+
+        with h5py.File(self.file_path, "a") as f:
+            f["Project"].attrs["project_metadata"] = project_metadata
+    
+    def add_test_metadata(self, test_name:str, test_metadata):
+        """Adds metadata to one test subfolder"""
+        test_metadata = json.dumps(test_metadata)
+
+        with h5py.File(self.file_path, "a") as f:
+            try:
+                f["Project"][test_name].attrs["test_metadata"] = test_metadata
+            except: # Temp hold while I figure out a better way to do this
+                print("Didn't add metadata for:" + test_name)
+
         
-        with h5py.File(file_name, "a") as f:
-            for key in metadata.keys():
-                f.attrs[key] = metadata[key]
-
-    def add_test_metadata(self, test_metadata):
-        # TODO refractor this
-        with h5py.File(self.full_file_name, "a") as f:
-
-            # Navigate through the different tests in the HDF5
-            for test_key in self.modified_data.keys():
-                test_path = "Project/" + str(test_key)
-                # Look through the keys in the test_metadata
-                for metadata_test_key in test_metadata.keys():
-
-                    # If the metadata test tkey key matches the name of the test name
-                    if test_key == metadata_test_key:
-                        # Load the attributes in that tests metadata 
-                        for attr_keys in test_metadata[metadata_test_key].keys():
-
-                            if attr_keys != 'column':
-                                f[test_path].attrs[attr_keys] = test_metadata[metadata_test_key][attr_keys]
-                            else:
-                                # Load in the right cols according to
-                                f[test_path].attrs[attr_keys] = test_metadata[metadata_test_key][self.cols_info[metadata_test_key]]

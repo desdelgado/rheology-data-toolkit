@@ -63,7 +63,7 @@ class add_rheo_metadata():
         self.file_path = file_path
 
     # TODO figure out where to optimal place to put this is
-    def add_project_metadata(self, metadata:str):
+    def add_project_metadata(self, metadata):
         project_metadata = json.dumps(metadata)
 
         with h5py.File(self.file_path, "a") as f:
