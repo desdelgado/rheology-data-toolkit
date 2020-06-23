@@ -13,8 +13,6 @@ and convert them into a single HDF5 file.  One can also add metadata to the over
 tests.
 
 ## Installation
-Before installing, make sure to pip install the [`xlrd`](https://xlrd.readthedocs.io/en/latest/ package).
-
 This package is currently published on PyPi and can be installed by:
 `pip install rheodata`
 
